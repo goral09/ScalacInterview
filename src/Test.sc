@@ -1,31 +1,13 @@
 object Test {
-	println("poczatek")                       //> poczatek
-	
 	val figures: List[Figure] = List(King(), King(), Rook())
                                                   //> figures  : List[Figure] = List(K, K, R)
+	
 	val board = Board(List.empty)(Size(3,3))  //> board  : Board = Board@6ae04d
   
-  var solutions: Int = 0                          //> solutions  : Int = 0
-	
 	def solve(figuresLeft: List[Figure], board: Board): List[List[(Figure, (Int, Int))]] = { ??? }
                                                   //> solve: (figuresLeft: List[Figure], board: Board)List[List[(Figure, (Int, Int
                                                   //| ))]]
-	solve(figures, board)                     //> scala.NotImplementedError: an implementation is missing
-                                                  //| 	at scala.Predef$.$qmark$qmark$qmark(Predef.scala:225)
-                                                  //| 	at Test$$anonfun$main$1.solve$1(Test.scala:9)
-                                                  //| 	at Test$$anonfun$main$1.apply$mcV$sp(Test.scala:10)
-                                                  //| 	at org.scalaide.worksheet.runtime.library.WorksheetSupport$$anonfun$$exe
-                                                  //| cute$1.apply$mcV$sp(WorksheetSupport.scala:76)
-                                                  //| 	at org.scalaide.worksheet.runtime.library.WorksheetSupport$.redirected(W
-                                                  //| orksheetSupport.scala:65)
-                                                  //| 	at org.scalaide.worksheet.runtime.library.WorksheetSupport$.$execute(Wor
-                                                  //| ksheetSupport.scala:75)
-                                                  //| 	at Test$.main(Test.scala:1)
-                                                  //| 	at Test.main(Test.scala)
 	
-	solutions
-                               
- println("koniec")
 }
 
 sealed trait Figure {
