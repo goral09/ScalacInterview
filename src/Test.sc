@@ -4,12 +4,11 @@ object Test {
 	val figures: List[Figure] = List(Queen(), Queen(), King(), King(), Bishop(), Bishop(), Knight())
                                                   //> figures  : List[Figure] = List(Q, Q, K, K, B, B, N)
 	val board = Board(List.empty)(Size(8,8))  //> board  : Board = Board@15f7ae5
-  board.board                                     //> res0: List[(Figure, (Int, Int))] = List()
+  board.figures                                   //> res0: List[(Figure, (Int, Int))] = List()
 	
-	def solve(figuresLeft: List[Figure], Board: Board): List[List[(Figure, (Int, Int))]] = {
-		val figure = figuresLeft.head
+	def solve(figuresLeft: List[Figure], board: Board): List[List[(Figure, (Int, Int))]] = {
 		List.empty
-	}                                         //> solve: (figuresLeft: List[Figure], Board: Board)List[List[(Figure, (Int, Int
+	}                                         //> solve: (figuresLeft: List[Figure], board: Board)List[List[(Figure, (Int, Int
                                                   //| ))]]
                                
  println("koniec")                                //> koniec
@@ -40,26 +39,19 @@ case class Rook()   extends Figure {
 }
 
 trait TilesGuarded {
-	def isGuarding(figure: Figure, pl: (Int, Int))(place: (Int, Int)): Boolean = figure guards(pl, place)
+	val isAnyGuarding: List[(Figure, (Int, Int))] => Tuple2[Int, Int] => Boolean =
+		list => pos => list.forall { figure => isGuarding(figure._1, figure._2)(pos) }
+	private def isGuarding(figure: Figure, pl: (Int, Int))(place: (Int, Int)): Boolean = figure guards(pl, place)
 }
 
 case class Size(x: Int, y: Int)
 
-class Board(val board: List[(Figure, (Int, Int))])(implicit boardSize: Size) {
-		def placeFigure(f: Figure, p: (Int, Int)) = Board((f, p) ::  board)
-		//Returns first empty tile on board
-		def firstEmptyTile: Option[(Int, Int)] = {
-			val lastFigurePos: (Int, Int) = board.last._2
-			val firstEmptyTiletoRet = lastFigurePos match {
-				//End of board, no empty tiles left
-				case (x,y) if y == boardSize.y && x == boardSize.x => None
-				//Last row, but not last column
-				case (x,y) if y == boardSize.y => Some((x + 1, 0))
-				//Last column, but not last row
-				case (x,y) if x == boardSize.x => Some((x, y + 1))
-			}
-			firstEmptyTiletoRet
-		}
+class Board(val figures: List[(Figure, (Int, Int))])(implicit boardSize: Size) extends TilesGuarded {
+		def placeFigure(f: Figure, p: (Int, Int)) = Board((f, p) ::  figures)
+		//Returns first empty and unguarded tile on board
+		def firstEmpty: Option[(Int, Int)] = (1 to boardSize.x).toList.flatMap(col => (1 to boardSize.y).toList.map(row => (col, row))).view.collectFirst({
+				case (x,y) if !isAnyGuarding(figures)((x,y)) => (x,y)
+		})
 }
 	
 object Board {
