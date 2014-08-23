@@ -40,7 +40,7 @@ case class Rook()   extends Figure {
 
 trait TilesGuarded {
 	val isAnyGuarding: List[(Figure, (Int, Int))] => Tuple2[Int, Int] => Boolean =
-		list => pos => list.forall { figure => isGuarding(figure._1, figure._2)(pos) }
+		list => pos => list.forall { case (figure, place) => isGuarding(figure, place)(pos) }
 	private def isGuarding(figure: Figure, pl: (Int, Int))(place: (Int, Int)): Boolean = figure guards(pl, place)
 }
 
