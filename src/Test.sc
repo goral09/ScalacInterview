@@ -3,10 +3,13 @@ object Test {
 	
 	implicit val size = Size(8,8)             //> size  : Size = Size(8,8)
 	
-	val board = Board(List((Krolowa(), (1,1)), (Goniec(), (2,1)), (Skoczek(), (2,2))))
-                                                  //> board  : Board = Board@1fb3ab6
-  board.board                                     //> res0: List[(Figure, (Int, Int))] = List((Krolowa(),(1,1)), (Goniec(),(2,1)),
-                                                  //|  (Skoczek(),(2,2)))
+	val figures: List[Figure] = List(Queen(), Queen(), King(), King(), Bishop(), Bishop(), Knight())
+                                                  //> figures  : List[Figure] = List(Queen(), Queen(), King(), King(), Bishop(), B
+                                                  //| ishop(), Knight())
+	val board = Board(List((Queen(), (1,1)), (Bishop(), (2,1)), (Knight(), (2,2))))
+                                                  //> board  : Board = Board@56dfcb
+  board.board                                     //> res0: List[(Figure, (Int, Int))] = List((Queen(),(1,1)), (Bishop(),(2,1)), (
+                                                  //| Knight(),(2,2)))
 	
 	def solve(figuresLeft: List[Figure], Board: Board): List[List[(Figure, (Int, Int))]] = {
 		val figure = figuresLeft.head
@@ -18,10 +21,11 @@ object Test {
 }
 
 sealed trait Figure
-case class Krolowa() extends Figure
-case class Goniec()  extends Figure
-case class Wieza()   extends Figure
-case class Skoczek() extends Figure
+case class Queen()  extends Figure
+case class Bishop() extends Figure
+case class King()   extends Figure
+case class Knight() extends Figure
+case class Rook()   extends Figure
 
 case class Size(x: Int, y: Int)
 
