@@ -1,15 +1,10 @@
 object Test {
 	println("poczatek")                       //> poczatek
 	
-	implicit val size = Size(8,8)             //> size  : Size = Size(8,8)
-	
 	val figures: List[Figure] = List(Queen(), Queen(), King(), King(), Bishop(), Bishop(), Knight())
-                                                  //> figures  : List[Figure] = List(Queen(), Queen(), King(), King(), Bishop(), B
-                                                  //| ishop(), Knight())
-	val board = Board(List((Queen(), (1,1)), (Bishop(), (2,1)), (Knight(), (2,2))))
-                                                  //> board  : Board = Board@56dfcb
-  board.board                                     //> res0: List[(Figure, (Int, Int))] = List((Queen(),(1,1)), (Bishop(),(2,1)), (
-                                                  //| Knight(),(2,2)))
+                                                  //> figures  : List[Figure] = List(Q, Q, K, K, B, B, N)
+	val board = Board(List.empty)(Size(8,8))  //> board  : Board = Board@15f7ae5
+  board.board                                     //> res0: List[(Figure, (Int, Int))] = List()
 	
 	def solve(figuresLeft: List[Figure], Board: Board): List[List[(Figure, (Int, Int))]] = {
 		val figure = figuresLeft.head
@@ -21,11 +16,21 @@ object Test {
 }
 
 sealed trait Figure
-case class Queen()  extends Figure
-case class Bishop() extends Figure
-case class King()   extends Figure
-case class Knight() extends Figure
-case class Rook()   extends Figure
+case class Queen()  extends Figure {
+	override def toString = "Q"
+}
+case class Bishop() extends Figure {
+	override def toString = "B"
+}
+case class King()   extends Figure {
+	override def toString = "K"
+}
+case class Knight() extends Figure {
+	override def toString = "N"
+}
+case class Rook()   extends Figure {
+	override def toString = "R"
+}
 
 case class Size(x: Int, y: Int)
 
