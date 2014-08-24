@@ -14,13 +14,13 @@ trait TilesGuarded {
   val isAttackingAny: (Figure, (Int, Int)) => List[(Figure, (Int, Int))] => Boolean =
     (figure, place) => figures => figures.exists({case (_, pl) => isGuarding(figure, place)(pl) })
     
-  private def isGuarding(figure: Figure, pl: (Int, Int))(place: (Int, Int)): Boolean = figure guards(pl, place)
+  private def isGuarding(figure: Figure, pl: (Int, Int))(place: (Int, Int)): Boolean = (pl == place || (figure guards(pl, place))
 }
 
 case class Size(x: Int, y: Int)
 
 class Board(val figures: List[(Figure, (Int, Int))])(implicit boardSize: Size) extends TilesGuarded {
-    //tracing helper fction
+    //tracing helper function
     def trace[A](msg: String, a: A): A = {
       println(s"$msg $a")
       a
@@ -33,7 +33,6 @@ class Board(val figures: List[(Figure, (Int, Int))])(implicit boardSize: Size) e
         case (x,y) => (!isAnyGuarding(figures)((x,y)) && !isAttackingAny(figure, (x,y))(figures))
     })
     
-    //def getFirstEmpty(figure: Figure) = emptyTiles.collectFirst({case field if!isAttackingAny(figure, field)(figures) => field })
 }
   
 object Board {
