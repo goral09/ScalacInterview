@@ -10,6 +10,12 @@ object App extends App {
 
 	
 
-	val solution = solve(ex1Figures, ex1Board)
+	val solution = solve(questionFigures, questionBoard)
 	println(solution)
+
+  
+  /*import MonoidSyntax._
+  import PositionMonoid._
+
+  Position(1, 2) |+| Position(2, 3)*/
 }
