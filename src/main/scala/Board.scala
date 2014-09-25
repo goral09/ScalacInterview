@@ -31,9 +31,17 @@ class Board(val figures: List[(Figure, (Int, Int))])(implicit boardSize: Size) e
     def emptyTilesLeft: Int = boardSize.x * boardSize.y - figures.size
     
     //Returns first empty and unguarded tile on board
-    def emptyTiles(figure: Figure) = (1 to boardSize.x).toList.flatMap(col => (1 to boardSize.y).toList.map(row => (col, row))).view.filter({
-        case (x,y) => (!isAnyGuarding(figures)((x,y)) && !isAttackingAny(figure, (x,y))(figures))
-    })
+    def emptyTiles(figure: Figure) = {
+      val lastFg = figures.reverse.find({case (f,p) => figure == f})
+      val (startPosX, startPosY) = lastFg match {
+        case Some((fig, posi)) => (posi._1, posi._2)
+        case None => (1,1)
+      }
+      
+      (startPosX to boardSize.x).toList.flatMap(col => (startPosY to boardSize.y).toList.map(row => (col, row))).view.filter({
+        case (x, y) => (!isAnyGuarding(figures)((x, y)) && !isAttackingAny(figure, (x, y))(figures))
+      })
+    }
 }
 object Board {
   def apply(Board: List[(Figure, (Int, Int))] = List.empty)(implicit size: Size): Board =

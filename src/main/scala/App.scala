@@ -10,8 +10,8 @@ object App extends App {
 
 	
 
-	val solution = solve(questionFigures, questionBoard)
-	println(solution)
+	solve(questionFigures, questionBoard)
+	println(Solver.solNumber)
 
   
   /*import MonoidSyntax._
